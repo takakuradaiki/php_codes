@@ -7,6 +7,10 @@ require_once('BabaNukiDeck.php');
 
 class BabaNukiGame
 {
+    private BabaNukiDeck $deck;
+    private BabaNukiPlayer $player;
+    private array $dealers;
+
     public function __construct(array $dealers, Player $player)
     {
         $this->dealers = $dealers;
@@ -35,7 +39,37 @@ class BabaNukiGame
         }
 
         //重複カード削除
-        $this->handRemoveDuplicate($this->player);
+        foreach ($allPlayer as $value) {
+            $value->handRemoveDuplicate($value);
+        }
+
+        $targetPlayerCnt = 0;
+        $endPlayers = [];
+        while (count($allPlayer) > 1) {
+            if (count($allPlayer) === $targetPlayerCnt) {
+                $targetPlayerCnt = 0;
+            }
+            if (count($allPlayer[$targetPlayerCnt]->getHand()) === 0) {
+                $endPlayers[] = array_splice($allPlayer, $targetPlayerCnt, 1)[0];
+                $this->winner($endPlayers);
+                continue;
+            }
+            $allPlayer[$targetPlayerCnt]->setTargetPlayerCnt($targetPlayerCnt);
+            $allPlayer[$targetPlayerCnt]->takeHand($allPlayer);
+
+            if (count($allPlayer[$targetPlayerCnt]->getHand()) === 0) {
+                $endPlayers[] = array_splice($allPlayer, $targetPlayerCnt, 1)[0];
+                $this->winner($endPlayers);
+                continue;
+            }
+            $targetPlayerCnt++;
+        }
+        echo $allPlayer[0]->getName() . 'が最下位です。' . PHP_EOL;
+        echo 'ババ抜きを終了します。' . PHP_EOL;
+
+
+
+
         // アプローチ2
         // for ($i = 0; $i < 53; $i++) {
         //     $drawplayer = current($allPlayer);
@@ -64,29 +98,16 @@ class BabaNukiGame
         // }
 
         // 重複を捨てる処理
-    }
-    public function handRemoveDuplicate(Player $player)
-    {
-        for ($i = 0; $i < count($player->hand->getHand()); $i++) {
-            $oneCard = $player->hand->getHand()[$i];
-            if ($oneCard->getNumber() === '削除') {
-                continue;
-            }
-            for ($j = $i + 1; $j < count($player->hand->getHand()); $j++) {
-                $targetCard = $player->hand->getHand()[$j];
-                if ($oneCard->getNumber() === $targetCard->getNumber()) {
-                    $oneCard->setNumber('削除');
-                    $targetCard->setNumber('削除');
-                    break;
-                }
-            }
-        }
 
-        $val = '削除';
-        foreach ($player->hand->getHand() as $key => $value) {
-            if ($value->getNumber() == $val) {
-                array_splice($player->hand->getHand(), $key, 1);
-            }
+    }
+    public function winner(array $endPlayer)
+    {
+        if (count($endPlayer) === 1) {
+            echo $endPlayer[0]->getName() . 'が1位です。' . PHP_EOL;
+        } elseif (count($endPlayer) === 2) {
+            echo $endPlayer[1]->getName() . 'が2位です。' . PHP_EOL;
+        } elseif (count($endPlayer) === 3) {
+            echo $endPlayer[2]->getName() . 'が3位です。' . PHP_EOL;
         }
     }
 }

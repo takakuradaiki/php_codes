@@ -35,4 +35,12 @@ if ($all_human_count === '2') {
     $player = new BabaNukiPlayer('私');
     $game = new BabaNukiGame($dealers, $player);
     $game->start();
+} elseif ($all_human_count === '4') {
+    $dealer1 = new BabaNukiDealer('ディーラー1');
+    $dealer2 = new BabaNukiDealer('ディーラー2');
+    $dealer3 = new BabaNukiDealer('ディーラー3');
+    $dealers = [$dealer1, $dealer2, $dealer3];
+    $player = new BabaNukiPlayer('私');
+    $game = new BabaNukiGame($dealers, $player);
+    $game->start();
 }
