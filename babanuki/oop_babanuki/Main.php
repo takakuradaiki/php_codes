@@ -6,7 +6,7 @@ require_once('BabaNukiDealer.php');
 require_once('BabaNukiPlayer.php');
 require_once('BabaNukiGame.php');
 
-$all_human_count = '3';
+$all_human_count = '4';
 
 // while (true) {
 //     $answer = trim(fgets(STDIN));
