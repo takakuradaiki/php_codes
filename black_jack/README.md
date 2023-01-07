@@ -8,7 +8,7 @@ C:\xampp\htdocs
 ・ターミナル上「cd .\black_jack\」コマンドを入力して下記ディレクトリを開く
 C:\xampp\htdocs\php_codes\black_jack>
 
-・上記のディレクトリの状態でターミナル上で「php main.php」コマンド入力する
+・上記ディレクトリの状態でターミナル上で「php main.php」コマンド入力する
 
 ・その後、プレイヤーの参加人数である「2」「3」「4」のいずれかをターミナル上で入力する
 
